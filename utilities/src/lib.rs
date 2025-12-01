@@ -12,15 +12,16 @@ where
     (result, now.elapsed())
 }
 
-pub fn read_file_data(day: usize, file_name: &str) -> String
-{
+fn read_data(day: usize, file_name: &str) -> Option<String> {
     let file_path = format!("test_files/day{day}/{file_name}");
 
-    fs::read_to_string(file_path).unwrap()
+    fs::read_to_string(file_path).ok()
 }
 
-// What if the functions returned Option<A> and then didn't print if they weren't implemented?
-// Doesn't help if the file isn't present.
+pub fn read_file_data(day: usize, file_name: &str) -> String {
+    read_data(day, file_name).unwrap()
+}
+
 pub fn run_puzzle<A, B, F, G>(day: usize, f1: F, f2: G)
 where
     F: Fn(&str) -> A,
@@ -28,7 +29,12 @@ where
     A: std::fmt::Display,
     B: std::fmt::Display,
 {
-    let contents = read_file_data(day, "input.txt");
+    let file_name = "input.txt";
+
+    let Some(contents) = read_data(day, file_name) else {
+        println!("Day {day} {file_name} is missing!");
+        return;
+    };
 
     let part_1 = instrument(f1, &contents);
     let part_2 = instrument(f2, &contents);
