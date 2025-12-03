@@ -8,3 +8,53 @@ Day 2:
     - part1: 2025-12-1 9:54pm [23560874270, 165.119us] (00:54:11)
     - part2: 2025-12-2 7:53pm [44143124633, 92.362ms] (22:52:56) I had the right answer, but I forgot to
         remove a random +1 used in testing -_-
+
+Day 3:
+    - Started 2025-12-2 9:00pm
+    - part1: 2025-12-2 9:11pm [17207, 1.723ms] (00:10:55)
+    - part2: 2025-12-2 9:33pm [170997883706617, 310.687ms] (00:33:30)
+
+Day 4:
+    - Started
+    - part1:
+    - part2:
+
+Day 5:
+    - Started
+    - part1:
+    - part2:
+
+Day 6:
+    - Started
+    - part1:
+    - part2:
+
+Day 7:
+    - Started
+    - part1:
+    - part2:
+
+Day 8:
+    - Started
+    - part1:
+    - part2:
+
+Day 9:
+    - Started
+    - part1:
+    - part2:
+
+Day 10:
+    - Started
+    - part1:
+    - part2:
+
+Day 11:
+    - Started
+    - part1:
+    - part2:
+
+Day 12:
+    - Started
+    - part1:
+    - part2:
