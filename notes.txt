@@ -2,3 +2,9 @@ Day 1:
     - Started 2025-11-30 9:00pm
     - part1: 2025-11-30 9:11pm [1097, 967.602us] (00:10:57)
     - part2: 2025-11-30 9:59pm [7101, 935.528us] (00:59:50)
+
+Day 2:
+    - Started 2025-12-1 9:00pm
+    - part1: 2025-12-1 9:54pm [23560874270, 165.119us] (00:54:11)
+    - part2: 2025-12-2 7:53pm [44143124633, 92.362ms] (22:52:56) I had the right answer, but I forgot to
+        remove a random +1 used in testing -_-
