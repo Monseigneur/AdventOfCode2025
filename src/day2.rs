@@ -1,4 +1,4 @@
-use std::{collections::HashSet, ops::RangeInclusive};
+use std::{cmp::Ordering, collections::HashSet, ops::RangeInclusive};
 
 const DAY: usize = 2;
 
@@ -9,15 +9,24 @@ pub fn run() {
 fn part_1(contents: &str) -> usize {
     let ranges = parse_ranges(contents);
 
-    ranges.into_iter().map(|range| find_invalid_ids(&range)).sum()
+    ranges
+        .into_iter()
+        .map(|range| find_invalid_ids(&range))
+        .sum()
 }
 
 fn parse_ranges(contents: &str) -> Vec<RangeInclusive<usize>> {
-    contents.split(",").map(|s| {
-        let pieces = s.split("-").map(|v| v.parse::<usize>().unwrap()).collect::<Vec<_>>();
+    contents
+        .split(",")
+        .map(|s| {
+            let pieces = s
+                .split("-")
+                .map(|v| v.parse::<usize>().unwrap())
+                .collect::<Vec<_>>();
 
-        pieces[0]..=pieces[1]
-    }).collect()
+            pieces[0]..=pieces[1]
+        })
+        .collect()
 }
 
 fn find_invalid_ids(range: &RangeInclusive<usize>) -> usize {
@@ -40,46 +49,28 @@ fn split_number(val: usize, is_start: bool) -> usize {
     let digits = val.to_string();
     let len = digits.len();
 
-    if is_start {
-        if len % 2 == 0 {
-            // Can use the top half (or bigger)
-            let prefix = digits[0..(len / 2)].parse::<usize>().unwrap();
+    if len % 2 == 0 {
+        let prefix = digits[0..(len / 2)].parse::<usize>().unwrap();
 
-            let result = make_invalid_id(prefix, 2);
-
-            if result < val {
-                prefix + 1
-            } else {
-                prefix
-            }
-        } else {
-            let prefix = 10usize.pow(len as u32 / 2);
-
-            prefix
+        match (is_start, make_invalid_id(prefix, 2).cmp(&val)) {
+            (true, Ordering::Less) => prefix + 1,
+            (false, Ordering::Greater) => prefix - 1,
+            _ => prefix,
         }
     } else {
-        if len % 2 == 0 {
-            // Can use the top half (or smaller)
-            let prefix = digits[0..(len / 2)].parse::<usize>().unwrap();
+        let base = 10usize.pow(len as u32 / 2);
 
-            let result = make_invalid_id(prefix, 2);
-
-            if result > val {
-                prefix - 1
-            } else {
-                prefix
-            }
-        } else {
-            let prefix = 10usize.pow(len as u32 / 2) - 1;
-            prefix
-        }
+        if is_start { base } else { base - 1 }
     }
 }
 
 fn part_2(contents: &str) -> usize {
     let ranges = parse_ranges(contents);
 
-    ranges.into_iter().map(|range| find_invalid_ids_v2(&range)).sum()
+    ranges
+        .into_iter()
+        .map(|range| find_invalid_ids_v2(&range))
+        .sum()
 }
 
 fn find_invalid_ids_v2(range: &RangeInclusive<usize>) -> usize {
@@ -137,7 +128,6 @@ mod tests {
 
         assert_eq!(part_1(&contents), 11);
     }
-
 
     #[test]
     fn test_input_part_1() {
