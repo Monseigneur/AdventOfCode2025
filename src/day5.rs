@@ -9,6 +9,8 @@ pub fn run() {
 fn part_1(contents: &str) -> usize {
     let (ranges, ingredients) = parse_database(contents);
 
+    let ranges = merge_ranges(ranges);
+
     count_spoiled_ingredient(&ranges, &ingredients)
 }
 
@@ -60,11 +62,15 @@ fn count_spoiled_ingredient(
 fn part_2(contents: &str) -> usize {
     let (ranges, _) = parse_database(contents);
 
-    count_fresh_ingredients(ranges)
+    let ranges = merge_ranges(ranges);
+
+    ranges
+        .into_iter()
+        .map(|range| range.end() - range.start() + 1)
+        .sum()
 }
 
-fn count_fresh_ingredients(ranges: Vec<RangeInclusive<usize>>) -> usize {
-    // Need to merge overlapping ranges.
+fn merge_ranges(ranges: Vec<RangeInclusive<usize>>) -> Vec<RangeInclusive<usize>> {
     let mut ranges = ranges;
     ranges.sort_by(|a, b| a.start().cmp(b.start()));
 
@@ -86,9 +92,6 @@ fn count_fresh_ingredients(ranges: Vec<RangeInclusive<usize>>) -> usize {
     merged_ranges.push(current_start..=current_end);
 
     merged_ranges
-        .into_iter()
-        .map(|range| range.end() - range.start() + 1)
-        .sum()
 }
 
 #[cfg(test)]
