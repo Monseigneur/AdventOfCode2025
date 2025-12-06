@@ -25,9 +25,10 @@ Day 5:
     - part2: 2025-12-4 9:37pm [345821388687084, 388.29us] (00:37:13)
 
 Day 6:
-    - Started
-    - part1:
-    - part2:
+    - Started 2025-12-5 9:00pm
+    - part1: 2025-12-5 9:15pm [5595593539811, 889.924us] (00:15:04)
+    - part2: 2025-12-5 10:57pm [10153315705125, 1.555ms] (01:57:47) What I needed to do was simple, but
+        writing the code was the most difficult part.
 
 Day 7:
     - Started
