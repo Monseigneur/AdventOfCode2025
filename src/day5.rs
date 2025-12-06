@@ -48,15 +48,18 @@ fn count_spoiled_ingredient(
 ) -> usize {
     ingredients
         .iter()
-        .map(|ingredient| {
-            for r in ranges.iter() {
-                if r.contains(ingredient) {
-                    return 1;
+        .filter_map(|ingredient| {
+            let result = ranges.binary_search_by(|range| {
+                if range.contains(ingredient) {
+                    std::cmp::Ordering::Equal
+                } else {
+                    range.start().cmp(ingredient)
                 }
-            }
-            0
+            });
+
+            result.ok()
         })
-        .sum()
+        .count()
 }
 
 fn part_2(contents: &str) -> usize {
