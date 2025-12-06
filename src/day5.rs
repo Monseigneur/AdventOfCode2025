@@ -42,10 +42,7 @@ fn parse_database(contents: &str) -> (Vec<RangeInclusive<usize>>, Vec<usize>) {
     (ranges, ingredients)
 }
 
-fn count_spoiled_ingredient(
-    ranges: &Vec<RangeInclusive<usize>>,
-    ingredients: &Vec<usize>,
-) -> usize {
+fn count_spoiled_ingredient(ranges: &[RangeInclusive<usize>], ingredients: &[usize]) -> usize {
     ingredients
         .iter()
         .filter_map(|ingredient| {

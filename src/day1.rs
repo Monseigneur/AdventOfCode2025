@@ -30,7 +30,7 @@ fn part_1(contents: &str) -> usize {
 }
 
 fn parse_rotations(contents: &str) -> Vec<Rotation> {
-    contents.lines().map(|line| Rotation::new(line)).collect()
+    contents.lines().map(Rotation::new).collect()
 }
 
 fn calculate_password(rotations: Vec<Rotation>) -> usize {
@@ -90,7 +90,7 @@ fn calculate_password_v2(rotations: Vec<Rotation>) -> usize {
         };
     }
 
-    at_zero as usize
+    at_zero
 }
 
 #[cfg(test)]

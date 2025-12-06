@@ -42,13 +42,24 @@ fn count_surrounding_rolls(grid: &Grid, row: usize, col: usize) -> usize {
     let max_col = grid[0].len() - 1;
 
     let mut surrounding_rolls = 0;
-    for r in row.saturating_sub(1)..=max_row.min(row + 1) {
-        for c in col.saturating_sub(1)..=max_col.min(col + 1) {
+
+    for (r, row_data) in grid
+        .iter()
+        .enumerate()
+        .take(max_row.min(row + 1) + 1)
+        .skip(row.saturating_sub(1))
+    {
+        for (c, item) in row_data
+            .iter()
+            .enumerate()
+            .take(max_col.min(col + 1) + 1)
+            .skip(col.saturating_sub(1))
+        {
             if r == row && c == col {
                 continue;
             }
 
-            if grid[r][c] == '@' {
+            if item == &'@' {
                 surrounding_rolls += 1;
             }
         }
@@ -78,7 +89,7 @@ fn count_and_remove_rolls(grid: &mut Grid) -> Option<usize> {
                 continue;
             }
 
-            if count_surrounding_rolls(&grid, r, c) < 4 {
+            if count_surrounding_rolls(grid, r, c) < 4 {
                 grid[r][c] = '.';
                 free_rolls += 1;
             }

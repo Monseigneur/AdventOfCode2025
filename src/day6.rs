@@ -42,7 +42,7 @@ fn parse_problems(contents: &str) -> Vec<Problem> {
         .next()
         .unwrap()
         .split_ascii_whitespace()
-        .map(|s| Operator::from_str(s))
+        .map(Operator::from_str)
         .map(|op| (vec![], op))
         .collect();
 
@@ -94,7 +94,7 @@ fn calculate_result(data: Vec<Vec<char>>) -> usize {
             op = Some(Operator::from_char(data[op_col][r]));
         }
 
-        let is_end = (0..num_cols).into_iter().all(|c| data[c][r] == ' ');
+        let is_end = (0..num_cols).all(|c| data[c][r] == ' ');
 
         if is_end {
             final_result += result.unwrap();
@@ -105,10 +105,10 @@ fn calculate_result(data: Vec<Vec<char>>) -> usize {
         }
 
         let mut current_val = 0;
-        for c in 0..op_col {
-            if data[c][r] != ' ' {
+        for col in data.iter().take(op_col) {
+            if col[r] != ' ' {
                 current_val *= 10;
-                current_val += data[c][r].to_digit(10).unwrap() as usize;
+                current_val += col[r].to_digit(10).unwrap() as usize;
             }
         }
 

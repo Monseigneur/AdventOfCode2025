@@ -82,7 +82,7 @@ fn find_invalid_ids_v2(range: &RangeInclusive<usize>) -> usize {
     let mut invalid_ids = HashSet::new();
 
     for prefix_size in 1..=max_prefix_digits {
-        let min_scale = (start_digits + prefix_size - 1) / prefix_size;
+        let min_scale = start_digits.div_ceil(prefix_size);
         let max_scale = end_digits / prefix_size;
 
         for scale in min_scale..=max_scale {
