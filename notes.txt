@@ -31,9 +31,9 @@ Day 6:
         writing the code was the most difficult part.
 
 Day 7:
-    - Started
-    - part1:
-    - part2:
+    - Started 2025-12-6 9:00pm
+    - part1: 2025-12-6 9:23pm [1662, 6.648ms] (00:23:02)
+    - part2: 2025-12-7 12:04am [40941112789504, 13.698ms] (03:03:57) Tricky to figure out the strategy.
 
 Day 8:
     - Started
