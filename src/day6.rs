@@ -104,13 +104,13 @@ fn calculate_result(data: Vec<Vec<char>>) -> usize {
             continue;
         }
 
-        let mut current_val = 0;
-        for col in data.iter().take(op_col) {
-            if col[r] != ' ' {
-                current_val *= 10;
-                current_val += col[r].to_digit(10).unwrap() as usize;
-            }
-        }
+        let current_val = data
+            .iter()
+            .take(op_col)
+            .filter(|col| col[r] != ' ')
+            .fold(0, |acc, col| {
+                acc * 10 + col[r].to_digit(10).unwrap() as usize
+            });
 
         if let Some(r) = result {
             match op {

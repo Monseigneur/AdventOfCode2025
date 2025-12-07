@@ -34,19 +34,20 @@ fn parse_rotations(contents: &str) -> Vec<Rotation> {
 }
 
 fn calculate_password(rotations: Vec<Rotation>) -> usize {
-    let mut current: isize = 50;
-    let mut at_zero = 0;
+    let (_, at_zero) = rotations
+        .iter()
+        .fold((50, 0), |(current, at_zero), rotation| {
+            let new_current = match rotation {
+                Rotation::Left(dist) => (current - *dist as isize) % 100,
+                Rotation::Right(dist) => (current + *dist as isize) % 100,
+            };
 
-    for rotation in rotations {
-        match rotation {
-            Rotation::Left(dist) => current = (current - dist as isize) % 100,
-            Rotation::Right(dist) => current = (current + dist as isize) % 100,
-        }
-
-        if current == 0 {
-            at_zero += 1;
-        }
-    }
+            if new_current == 0 {
+                (new_current, at_zero + 1)
+            } else {
+                (new_current, at_zero)
+            }
+        });
 
     at_zero
 }
