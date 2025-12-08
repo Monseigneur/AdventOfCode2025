@@ -36,9 +36,9 @@ Day 7:
     - part2: 2025-12-7 12:04am [40941112789504, 13.698ms] (03:03:57) Tricky to figure out the strategy.
 
 Day 8:
-    - Started
-    - part1:
-    - part2:
+    - Started 2025-12-7 9:00pm
+    - part1: 2025-12-7 9:34pm [79560, 446.205ms] (00:34:29)
+    - part2: 2025-12-7 9:58pm [31182420, 464.065ms] (00:58:42)
 
 Day 9:
     - Started
