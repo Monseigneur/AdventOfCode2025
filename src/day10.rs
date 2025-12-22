@@ -78,7 +78,9 @@ fn calculate_presses(machine: Machine) -> usize {
             return num_pushes;
         }
 
-        if let Some(best_count) = presses.get(&state) && *best_count <= num_pushes {
+        if let Some(best_count) = presses.get(&state)
+            && *best_count <= num_pushes
+        {
             continue;
         }
 
@@ -95,9 +97,7 @@ fn calculate_presses(machine: Machine) -> usize {
 fn part_2(contents: &str) -> usize {
     let machines = parse_machines(contents);
 
-    machines.into_iter()
-        .map(calculate_presses_joltage_v3)
-        .sum()
+    machines.into_iter().map(calculate_presses_joltage_v3).sum()
 }
 
 fn calculate_presses_joltage_v3(machine: Machine) -> usize {
@@ -108,25 +108,34 @@ fn calculate_presses_joltage_v3(machine: Machine) -> usize {
     calculate_presses_joltage_helper(&button_cache, &machine.joltages, &mut cache).unwrap()
 }
 
-fn build_lights(joltages: &Vec<usize>) -> usize {
+fn build_lights(joltages: &[usize]) -> usize {
     joltages.iter().rev().fold(0, |acc, x| (acc << 1) + (x % 2))
 }
 
-fn build_button_cache(buttons: &Vec<usize>) -> HashMap<usize, Vec<Vec<usize>>> {
+fn bits_to_indices(val: usize) -> Vec<usize> {
+    let mut mask = val;
+    let mut index = 0;
+    let mut indices = vec![];
+    while mask != 0 {
+        if mask & 1 != 0 {
+            indices.push(index);
+        }
+
+        mask >>= 1;
+        index += 1;
+    }
+
+    indices
+}
+
+fn build_button_cache(buttons: &[usize]) -> HashMap<usize, Vec<Vec<usize>>> {
     let mut button_cache: HashMap<usize, Vec<Vec<usize>>> = HashMap::new();
 
     for i in 0..=((1 << buttons.len()) - 1) {
-        let mut mask = i;
-        let mut index = 0;
-        let mut button_group = vec![];
-        while mask != 0 {
-            if mask & 1 != 0 {
-                button_group.push(buttons[index]);
-            }
-
-            mask >>= 1;
-            index += 1;
-        }
+        let button_group = bits_to_indices(i)
+            .into_iter()
+            .map(|index| buttons[index])
+            .collect::<Vec<_>>();
 
         let target = button_group.iter().fold(0, |state, x| state ^ x);
 
@@ -136,23 +145,16 @@ fn build_button_cache(buttons: &Vec<usize>) -> HashMap<usize, Vec<Vec<usize>>> {
     button_cache
 }
 
-fn apply_buttons(buttons: &Vec<usize>, joltages: &Vec<usize>) -> Option<Vec<usize>> {
-    let mut joltages = joltages.clone();
+fn apply_buttons(buttons: &[usize], joltages: &[usize]) -> Option<Vec<usize>> {
+    let mut joltages = joltages.to_owned();
 
     for button in buttons {
-        let mut mask = *button;
-        let mut index = 0;
-        while mask != 0 {
-            if mask & 1 != 0 {
-                if joltages[index] == 0 {
-                    return None;
-                }
-
-                joltages[index] -= 1;
+        for index in bits_to_indices(*button) {
+            if joltages[index] == 0 {
+                return None;
             }
 
-            mask >>= 1;
-            index += 1;
+            joltages[index] -= 1;
         }
     }
 
@@ -161,8 +163,11 @@ fn apply_buttons(buttons: &Vec<usize>, joltages: &Vec<usize>) -> Option<Vec<usiz
     Some(joltages)
 }
 
-fn calculate_presses_joltage_helper(button_cache: &HashMap<usize, Vec<Vec<usize>>>, joltages: &Vec<usize>, cache: &mut HashMap<Vec<usize>, Option<usize>>) -> Option<usize>
-{
+fn calculate_presses_joltage_helper(
+    button_cache: &HashMap<usize, Vec<Vec<usize>>>,
+    joltages: &Vec<usize>,
+    cache: &mut HashMap<Vec<usize>, Option<usize>>,
+) -> Option<usize> {
     if joltages.iter().all(|x| *x == 0) {
         return Some(0);
     }
@@ -177,8 +182,10 @@ fn calculate_presses_joltage_helper(button_cache: &HashMap<usize, Vec<Vec<usize>
     if let Some(possible_buttons) = button_cache.get(&target) {
         for button_group in possible_buttons {
             let child_best = apply_buttons(button_group, joltages)
-                .and_then(|new_joltages| calculate_presses_joltage_helper(button_cache, &new_joltages, cache))
-                .and_then(|val| Some(val * 2 + button_group.len()));
+                .and_then(|new_joltages| {
+                    calculate_presses_joltage_helper(button_cache, &new_joltages, cache)
+                })
+                .map(|val| val * 2 + button_group.len());
 
             if best.is_none_or(|best| child_best.is_some_and(|child_best| child_best < best)) {
                 best = child_best;
