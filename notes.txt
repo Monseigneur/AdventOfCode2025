@@ -49,7 +49,8 @@ Day 9:
 Day 10:
     - Started 2025-12-12 7:06pm
     - part1: 2025-12-14 4:35pm [486, 90.384ms] (> 24 hours)
-    - part2:
+    - part2: 2025-12-22 12:11am [17820, 127.246ms] (< 24 hours) Followed a pseudocode algorithm from the subreddit.
+        Made further improvements to speed it up.
 
 Day 11:
     - Started 2025-12-12 8:25pm
